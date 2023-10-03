@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Photo website</title>
+</head>
+
+<style>
+    *{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: cursive;
+}
+
+img {
+    width: 200px;
+    height: 200px;
+    margin-right: 20px;
+    border-radius: 50%;
+}
+
+body {
+    background: aliceblue;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    height: auto;
+}
+
+header {
+    background: #333;
+    color: wheat;
+    padding: 10px;
+    width: 100%;
+    text-align: center;
+} 
+
+
+ 
+.like-container {
+    display: inline-block;
+    text-align: center;
+    position: relative;
+    left: 10%;
+}
+
+.photo-container {
+    display: flex;
+    margin: 50px;
+    place-items: 10px;
+}
+
+/* #photoContainer {
+    display: none;
+} */
+
+.like-heart {
+    position: absolute;
+    margin-top: 85px;
+    top: -20%;
+    left: 0;
+    height: 25px;
+    width: 25px;
+    cursor: pointer;
+    background: gray;
+    transform: rotate(-45deg);
+}
+
+.like-heart:before {
+    position: absolute;
+    content: "";
+    top: -50%;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: gray;
+    border-radius: 50%;
+}
+
+.like-heart:after{
+    position: absolute;
+    content: "";
+    width: 100%;
+    height: 100%;
+    background: gray;
+    border-radius: 50%;
+}
+
+.animated-heart {
+    position: absolute;
+    margin-top: 85px;
+    top: -20%;
+    left: 0;
+    height: 25px;
+    width: 25px;
+    cursor: pointer;
+    background: red;
+    transform: rotate(-45deg);
+    visibility: hidden;
+}
+
+
+
+.animated-heart:before {
+    position: absolute;
+    content: "";
+    top: -50%;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: red;
+    border-radius: 50%;
+}
+
+.animated-heart:after {
+    position: absolute;
+    content: "";
+    width: 100%;
+    height: 100%;
+    background: red;
+    border-radius: 50%;
+}
+
+.animated-heart.animated {
+    animation: popup .8s linear;
+    visibility: visible;
+}
+
+@keyframes popup {
+    100% {
+        transform: scale(1.5) rotate(-45deg);
+        opacity: 0;
+    }
+}
+
+.comments {
+    position: absolute;
+    top: 70%;
+    left: 0;
+    color: blue;
+}
+
+.like-count {
+    position: absolute;
+    top: 50%;
+    margin-left: 7px;
+    font-weight: bold;
+}
+
+button {
+    margin-bottom: 30px;
+    cursor: pointer;
+}
+
+footer {
+    text-align: center;
+    display: none;
+} 
+
+</style> 
+<body>
+    <header>
+        <h1>Photo website</h1>
+    </header>
+
+    <div id="photoContainer" class="photo-container">
+        <img src="bulb.webp"><br>
+        <div class="like-container">
+            <span class="like-heart"></span><br>
+            <span class="animated-heart"></span>
+            <span class="like-count">0</span>
+            <a href="comment.html" class="comments">comment</a>
+        </div>
+    </div>
+   
+    <button for="file" id="addPhotoButton">Add photo</button>
+    <footer>
+        <p>Copyright &copy; 2023</p>
+    </footer> 
+    
+</body>
+<script>
+    var likehearts = document.querySelector(".like-heart");
+    var animatedHeart = document.querySelector(".animated-heart")
+    var addPhotoButton = document.getElementById('addPhotoButton')
+
+    
+    likehearts.addEventListener('click', function() {
+        var likecount = this.parentNode.querySelector(".like-count");
+        var countSpan = parseInt(likecount.textContent);
+        likecount.textContent = countSpan+1;
+        animatedHeart.classList.add('animated');
+        
+    });
+    
+
+
+    animatedHeart.addEventListener('click', function() {
+        animatedHeart.classList.remove('animated');
+        
+    });
+
+    addPhotoButton.addEventListener('click', function() {
+        var fileinput = document.createElement('input')
+        fileinput.type = 'file'
+        fileinput.accept = 'image/*'
+        fileinput.style.display = 'none'
+
+        fileinput.addEventListener('change', function(event) {
+            var file = event.target.files[0]
+            if (file) {
+                var reader = new FileReader()
+
+                reader.addEventListener('load', function() {
+                    var photoContainer = document.createElement('div');
+                    photoContainer.className = "photo-container";
+                    var photoImage = document.createElement('img');
+                    photoImage.src = reader.result;
+                    var likeContainer = document.createElement('div');
+                    likeContainer.className = "like-container";
+                    var likeHeart = document.createElement('span');
+                    likeHeart.className = "like-heart";
+                    var animatedHeart = document.createElement('span');
+                    animatedHeart.className = "animated-heart";
+                    var likeCount = document.createElement('span');
+                    likeCount.className = "like-count";
+                    likeCount.textContent = "0";
+                    var commentLink = document.createElement('a');
+                    commentLink.className = "comments";
+                    commentLink.href = "comment.html";
+                    commentLink.textContent = "comment";
+
+                    likeContainer.appendChild(likeHeart);
+                    likeContainer.appendChild(document.createElement('br'));
+                    likeContainer.appendChild(animatedHeart);
+                    likeContainer.appendChild(likeCount);
+                    likeContainer.appendChild(commentLink);
+
+                    photoContainer.appendChild(photoImage);
+                    photoContainer.appendChild(document.createElement('br'));
+                    photoContainer.appendChild(likeContainer);
+
+                    document.body.insertBefore(photoContainer, addPhotoButton);
+                })
+
+                reader.readAsDataURL(file)
+            }
+        })
+        document.body.appendChild(fileinput)
+        fileinput.click()
+        document.body.removeChild(fileinput)
+    });
+</script>
+</html>

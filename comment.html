@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>comment section</title>
+</head>
+<style>
+    *{
+    font-family: cursive;
+}
+
+body {
+    background: aliceblue;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: auto;
+}
+
+.container {
+    width: 70%;
+    height: auto;
+    background: #666;
+    color: wheat;
+    padding: 30px 20px;
+    margin: 20px;
+    border-radius: 10px;
+}
+
+#back {
+    width: 30px;
+    height: 30px;
+    background-color: aliceblue;
+    border-radius: 5px;
+    float: right;
+}
+
+#back:hover {
+    background: red;
+    color: white;
+}
+
+img{
+    width: 30%;
+    max-height: 30%;
+    border-radius: 20px;
+}
+
+#name{
+    width: 50%;
+    margin-top: 10px;
+    padding: 5px;
+    border-radius: 5px;
+}
+
+#comment {
+    width: 70%;
+    border-radius: 5px;
+    padding: 10px;
+}
+
+#name:focus,
+#comment:focus {
+    outline: none;
+}
+
+input[type="submit"] {
+    width: 20%;
+    height: 50px;
+    float: right;
+    background: blue;
+    color: white;
+    border-radius: 10px;
+}
+
+input[type="submit"]:focus {
+    outline: none;
+}
+</style>
+<body>
+    <div class="container">
+        <a href="nope.html"><button id="back">X</button></a>
+        <form id="comment-form">
+            <img src=""><br>
+            <input type="text" id="name" placeholder="Enter your name" required><br>
+            <br>
+            <label for="comment">Comment:</label><br>
+            <textarea name="comment" id="comment" required></textarea>
+            <input type="submit" id="submit" value="Add comment">
+        </form>
+        <hr> 
+        <div id="comment-section">
+        </div>
+    </div>
+</body>
+
+<script>
+    const commentForm = document.getElementById("comment-form")
+    const commentSection = document.getElementById("comment-section")
+
+    commentForm.addEventListener('submit', function(event) {
+        event.preventDefault()
+
+        const name = event.target.elements.name.value
+        const comment = event.target.elements.comment.value
+
+        const commentBox = document.createElement('div')
+        commentBox.classList.add('comment-box')
+
+        const nameElement = document.createElement('h4')
+        nameElement.innerText = "@"+name
+        commentBox.appendChild(nameElement)
+
+        const commentElement = document.createElement('p')
+        commentElement.innerText = comment
+        commentBox.appendChild(commentElement)
+
+        commentSection.appendChild(commentBox)
+
+        event.target.reset()
+    })
+</script>
+</html>
